@@ -1,1 +1,3 @@
 mjpg_streamer -i "input_file.so -f ./test -r" -o "output_http.so -p 8090"
+g++ example.cpp -o example `curl-config --cflags --libs` -I /home/debian/Desktop/cpr/cpr-example/opt/cpr/include/ -I /home/debian/Desktop/cpr/cpr-example/opt/json/src/ -std=c++11 -lcpr -L/home/debian/Desktop/cpr/cpr-example/build/lib/
+
