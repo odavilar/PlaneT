@@ -1,0 +1,1 @@
+mjpg_streamer -i "input_file.so -f ./test -r" -o "output_http.so -p 8090"
