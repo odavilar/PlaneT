@@ -7,7 +7,9 @@ INCLUDES
 /***************************************************************************//**
 CONSTANTS
 *******************************************************************************/
-#define CLASSIFIER "lbpcascade_frontalface.xml"
+
+//#define CLASSIFIER "lbpcascade_frontalface.xml"
+#define CLASSIFIER "plane.xml"
 
 /***************************************************************************//**
 NAMESPACES
@@ -38,12 +40,15 @@ vector<Rect> Recognizer::oDetect(Mat oFrame)
 
     if(this->boInitialized)
     {
-        this->p_oCascade.detectMultiScale(oFrame,
+        Mat oGray;
+        cvtColor(oFrame, oGray, CV_BGR2GRAY);
+
+        this->p_oCascade.detectMultiScale(oGray,
                                           ovResult,
                                           1.09,
-                                          3,
+                                          2,
                                           0 | CV_HAAR_SCALE_IMAGE,
-                                          Size(30, 30));
+                                          Size(80, 60));
     }
 
     return ovResult;

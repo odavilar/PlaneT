@@ -144,7 +144,7 @@ void vCapture15FPS(void)
 
 	Mat oFrame;
 	vector < Rect > oObject;
-	RTIME now, previous;
+	RTIME now, now2, previous, previous2;
 	int i = 0;
 
 #ifdef SAVE_IMAGES
@@ -167,7 +167,7 @@ void vCapture15FPS(void)
 
 	while (1)
 	{
-		rt_task_wait_period(NULL);
+    	rt_task_wait_period(NULL);
 		now = rt_timer_read();
 		//Get a new frame from camera
 		oCapture >> oFrame;
@@ -176,9 +176,17 @@ void vCapture15FPS(void)
 			rt_printf("Failed to capture an image\n");
 			oCapture.boConnectToCamera();
 		}
-
+		now2 = rt_timer_read();
+		rt_printf("Image Captured: %ld.%06ld ms\n",
+				(long) (now2 - now) / 1000000,
+				(long) (now2 - now) % 1000000);
+        previous2 = now2;
 		oObject = oRecognize.oDetect(oFrame);
-
+		now2 = rt_timer_read();
+		rt_printf("Image detection: %ld.%06ld ms\n",
+				(long) (now2 - previous2) / 1000000,
+				(long) (now2 - previous2) % 1000000);
+	
 		if (oObject.size() != 0)
 		{
 #ifdef SAVE_IMAGES
@@ -200,7 +208,7 @@ void vCapture15FPS(void)
 			oLEDS.vOFF();
 		}
 
-		rt_printf("Time since last turn: %ld.%06ld ms\n",
+		rt_printf("Time since last image: %ld.%06ld ms\n",
 				(long) (now - previous) / 1000000,
 				(long) (now - previous) % 1000000);
 		previous = now;
